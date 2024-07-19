@@ -1,0 +1,7 @@
+version: "3"
+services:
+  tg_bot:
+    build: .
+    command: python main.py
+    volumes:
+      - .:/code
