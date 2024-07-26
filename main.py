@@ -8,24 +8,31 @@ from fastapi import FastAPI, Header
 from loguru import logger
 from commonts.logger import init_logging
 from commonts.settings import settings
-from aiogram import Bot, Dispatcher, types
+from tg_bot.bot import bot, dp
 from typing import Annotated
 from uvicorn import run
+from aiogram import types
+from contextlib import asynccontextmanager
 
-bot = Bot(token=settings.bot_token)
-dp = Dispatcher(bot=bot)
-app = FastAPI()
 
-@app.on_event("startup")
-async def on_startup():
+@asynccontextmanager
+async def lifespan(application: FastAPI):
+    logger.info("🚀 Starting application")
     webhook_info = await bot.get_webhook_info()
     if webhook_info.url != f'{settings.base_webhook_url}{settings.webhook_path}':
+        logger.info(f'set webhook {settings.webhook_path}')
         await bot.set_webhook(
             url=f'{settings.base_webhook_url}{settings.webhook_path}',
             secret_token=settings.secret_token,
             drop_pending_updates=True,
             max_connections=100,
         )
+    yield
+    logger.info("⛔ Stopping application")
+
+
+app = FastAPI(lifespan=lifespan)
+
 
 @app.post(settings.webhook_path)
 async def bot_webhook(update: dict,
@@ -42,4 +49,3 @@ if __name__ == '__main__':
     init_logging()
     logger.info("bot start")
     run(app, host='0.0.0.0', port=8010)
-

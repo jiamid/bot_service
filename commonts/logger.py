@@ -80,7 +80,7 @@ def init_logging(file_name: str = 'bot_service'):
         {'sink': sys.stdout,
          'level': 0,
          'format': format_record},
-        {'sink': f'{log_dir}/{file_name}_info.log',
+        {'sink': f'{log_dir}/info/{file_name}_info.log',
          'level': 25,
          'format': format_record,
          'enqueue': True,
