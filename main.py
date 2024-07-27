@@ -13,6 +13,7 @@ from typing import Annotated
 from uvicorn import run
 from aiogram import types
 from contextlib import asynccontextmanager
+from tg_bot.handlers import messages
 
 
 @asynccontextmanager
@@ -39,7 +40,8 @@ async def bot_webhook(update: dict,
                       x_telegram_bot_api_secret_token: Annotated[str | None, Header()] = None) -> None | dict:
     """ Register webhook endpoint for telegram bot"""
     if x_telegram_bot_api_secret_token != settings.secret_token:
-        logger.error("Wrong secret token !")
+
+        logger.error(f"Wrong secret token ! {x_telegram_bot_api_secret_token}")
         return {"status": "error", "message": "Wrong secret token !"}
     telegram_update = types.Update(**update)
     await dp.feed_webhook_update(bot=bot, update=telegram_update)
@@ -48,4 +50,4 @@ async def bot_webhook(update: dict,
 if __name__ == '__main__':
     init_logging()
     logger.info("bot start")
-    run(app, host='0.0.0.0', port=8010)
+    run(app, host='0.0.0.0', port=9999)

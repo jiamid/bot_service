@@ -21,7 +21,7 @@ async def cmd_id(message: Message) -> None:
 
 @telegram_router.message(CommandStart())
 async def cmd_start(message: Message) -> None:
-    await message.answer(f"Hello, {hbold(message.from_user.full_name)}!")
+    await message.answer(f"Hello, {hbold(message.from_user.full_name)}!",parse_mode='html')
 
 
 @telegram_router.message(F.text == "echo")
