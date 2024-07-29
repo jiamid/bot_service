@@ -35,4 +35,4 @@ async def start_task(message: Message) -> None:
 async def send_message():
     for x in chat_ids:
         logger.info(f'send message to {x}')
-        bot.send_message(x, 'this is a test')
+        await bot.send_message(x, 'this is a test')
