@@ -7,10 +7,6 @@
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 scheduler = AsyncIOScheduler({
-    'apscheduler.executors.default': {
-        'class': 'apscheduler.executors.pool:ThreadPoolExecutor',
-        'max_workers': '20'
-    },
     'apscheduler.executors.processpool': {
         'type': 'processpool',
         'max_workers': '10'

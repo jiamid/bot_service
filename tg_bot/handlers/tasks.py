@@ -22,17 +22,19 @@ async def join_team(message: Message) -> None:
     chat_ids.append(message.chat.id)
     await message.answer(f"Your ID: {message.from_user.id}")
 
+async def send_tg():
+    for x in chat_ids:
+        logger.info(f'send message to {x}')
+        await bot.send_message(x, 'this is a test')
+
 
 @telegram_router.message(Command("start1"))
 async def start_task(message: Message) -> None:
-    scheduler.add_job(send_message, id='task4', trigger='interval', minutes=10,
+    scheduler.add_job(send_tg, id='task4', trigger='interval', minutes=10,
                       next_run_time=datetime.now() + timedelta(seconds=10)
                       )
 
     await message.answer(f"start success")
 
 
-async def send_message():
-    for x in chat_ids:
-        logger.info(f'send message to {x}')
-        await bot.send_message(x, 'this is a test')
+
