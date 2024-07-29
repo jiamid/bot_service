@@ -13,8 +13,7 @@ from typing import Annotated
 from uvicorn import run
 from aiogram import types
 from contextlib import asynccontextmanager
-from tg_bot.handlers import messages
-from tg_bot.handlers import tasks
+from tg_bot import handlers
 from commonts.aps_scheduler import scheduler
 
 

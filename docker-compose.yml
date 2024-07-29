@@ -5,3 +5,5 @@ services:
     command: python main.py
     volumes:
       - .:/code
+    ports:
+      - "9999:9999"
