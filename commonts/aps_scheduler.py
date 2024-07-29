@@ -6,16 +6,7 @@
 # @Software: PyCharm
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
-
-# 为SQLAlchemy 定义数据库url地址
-SQLALCHEMY_DATABASE_URI = f'mysql+pymysql://:halo@api.jiamid.com:5432/jiamid'
-
 scheduler = AsyncIOScheduler({
-    'apscheduler.jobstores.default': {
-        'type': 'sqlalchemy',
-        'url': SQLALCHEMY_DATABASE_URI,
-        'tablename': 'task_job'
-    },
     'apscheduler.executors.default': {
         'class': 'apscheduler.executors.pool:ThreadPoolExecutor',
         'max_workers': '20'
