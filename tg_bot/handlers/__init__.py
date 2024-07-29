@@ -6,3 +6,4 @@
 # @Software: PyCharm
 from . import messages
 from . import tasks
+from . import proxy_setting
