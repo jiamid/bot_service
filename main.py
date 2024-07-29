@@ -14,6 +14,12 @@ from uvicorn import run
 from aiogram import types
 from contextlib import asynccontextmanager
 from tg_bot.handlers import messages
+from commonts.aps_scheduler import scheduler
+
+
+async def init_scheduler():
+    logger.info("🚀 Starting scheduler")
+    scheduler.start()
 
 
 @asynccontextmanager
@@ -28,6 +34,7 @@ async def lifespan(application: FastAPI):
             drop_pending_updates=True,
             max_connections=100,
         )
+    await init_scheduler()
     yield
     logger.info("⛔ Stopping application")
 
@@ -40,12 +47,21 @@ async def bot_webhook(update: dict,
                       x_telegram_bot_api_secret_token: Annotated[str | None, Header()] = None) -> None | dict:
     """ Register webhook endpoint for telegram bot"""
     if x_telegram_bot_api_secret_token != settings.secret_token:
-
         logger.error(f"Wrong secret token ! {x_telegram_bot_api_secret_token}")
         return {"status": "error", "message": "Wrong secret token !"}
     telegram_update = types.Update(**update)
     await dp.feed_webhook_update(bot=bot, update=telegram_update)
 
+@app.get("/task_list")
+async def task_list():
+    jobs = scheduler.get_jobs()  # 获取全部的jobs
+    jobs_info = []
+    for job in jobs:
+        info = {}
+        info['id'] = job.id
+        info['next_run_time'] = job.next_run_time
+        jobs_info.append(info)
+    return jobs_info
 
 if __name__ == '__main__':
     init_logging()
