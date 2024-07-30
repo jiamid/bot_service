@@ -7,12 +7,13 @@
 from datetime import datetime
 import json
 from fastapi import APIRouter, Depends
+from fastapi.responses import HTMLResponse
 from commonts.storage_manager import history_html_storage
 
 router = APIRouter()
 
 
-@router.get('/')
+@router.get('/', response_model=HTMLResponse)
 async def gen_index():
     return generate_index_html()
 

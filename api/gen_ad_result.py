@@ -12,11 +12,12 @@ from commonts.json_manager import json_manager
 from loguru import logger
 from datetime import datetime
 from collections import defaultdict
+from fastapi.responses import HTMLResponse
 
 router = APIRouter()
 
 
-@router.get('/result/{result_id}')
+@router.get('/result/{result_id}', response_model=HTMLResponse)
 async def gen_ad_result(result_id: str):
     data = json_manager.read_file(result_id)
     return generate_ad_html(data)
