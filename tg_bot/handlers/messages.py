@@ -56,15 +56,15 @@ async def hello(message: types.Message) -> None:
         await message.answer("Nice try!")
 
 
-@telegram_router.message(F.text == "画")
-async def handle_draw(message: Message):
-    await message.reply('Get')
-    prompt = message.text
-    doubao_bot = DouBaoBot()
-    result = await doubao_bot.text_to_img(prompt)
-    img = result.get('url')
-    tips = result.get('tips')
-    if img:
-        await message.reply_photo(img)
-    if tips:
-        await message.reply(tips)
+# @telegram_router.message(F.text == "画")
+# async def handle_draw(message: Message):
+#     await message.reply('Get')
+#     prompt = message.text
+#     doubao_bot = DouBaoBot()
+#     result = await doubao_bot.text_to_img(prompt)
+#     img = result.get('url')
+#     tips = result.get('tips')
+#     if img:
+#         await message.reply_photo(img)
+#     if tips:
+#         await message.reply(tips)
