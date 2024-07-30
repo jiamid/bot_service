@@ -6,6 +6,8 @@
 # @Software: PyCharm
 from fastapi import APIRouter
 from api.gen_index import router as index_router
+from api.gen_ad_result import router as result_router
 
 router = APIRouter()
 router.include_router(index_router)
+router.include_router(result_router)
