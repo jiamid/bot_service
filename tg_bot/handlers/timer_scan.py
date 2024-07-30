@@ -100,7 +100,7 @@ async def do_scan() -> None:
     if result:
         now = datetime.now()
         now_ts = int(now.timestamp())
-        filename = f'result_{now_ts}'
+        filename = f'r{now_ts}'
         json_manager.save_file(result, filename)
         history_list: list = history_html_storage.get_value('history', [])
         history_list.append({now.strftime('%Y-%m-%d %H:%M:%S'): filename})
