@@ -5,8 +5,7 @@
 # @File    : gen_index.py
 # @Software: PyCharm
 from datetime import datetime
-import json
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter
 from fastapi.responses import HTMLResponse
 from commonts.storage_manager import history_html_storage
 

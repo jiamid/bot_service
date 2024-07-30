@@ -4,7 +4,7 @@
 # @Email   : jiamid@qq.com
 # @File    : main.py
 # @Software: PyCharm
-from fastapi import FastAPI, Header
+from fastapi import FastAPI
 from loguru import logger
 from commonts.logger import init_logging
 from commonts.settings import settings

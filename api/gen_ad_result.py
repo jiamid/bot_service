@@ -4,12 +4,8 @@
 # @Email   : jiamid@qq.com
 # @File    : gen_ad_result.py
 # @Software: PyCharm
-from datetime import datetime
-import json
-from fastapi import APIRouter, Depends
-from commonts.storage_manager import history_html_storage
+from fastapi import APIRouter
 from commonts.json_manager import json_manager
-from loguru import logger
 from datetime import datetime
 from collections import defaultdict
 from fastapi.responses import HTMLResponse

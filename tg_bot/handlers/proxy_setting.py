@@ -5,10 +5,7 @@
 # @File    : proxy_setting.py
 # @Software: PyCharm
 from loguru import logger
-from aiogram import types
-from aiogram import F
-from aiogram.filters import CommandStart, Command
-from aiogram.utils.markdown import hbold
+from aiogram.filters import Command
 from aiogram.types import Message
 from tg_bot.bot import telegram_router
 from commonts.storage_manager import proxys_storage, proxy_manager

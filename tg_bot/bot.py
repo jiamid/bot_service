@@ -5,8 +5,7 @@
 # @File    : bot.py
 # @Software: PyCharm
 # -*- coding: utf-8 -*-
-from aiogram import Bot, Dispatcher, Router, types
-from aiogram.enums import ParseMode
+from aiogram import Bot, Dispatcher, Router
 from commonts.settings import settings
 
 bot = Bot(token=settings.bot_token)

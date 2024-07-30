@@ -4,7 +4,7 @@
 # @Email   : jiamid@qq.com
 # @File    : task_list.py
 # @Software: PyCharm
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter
 from commonts.scheduler_manager import scheduler_manager
 
 router = APIRouter()
