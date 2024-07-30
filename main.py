@@ -8,12 +8,9 @@ from fastapi import FastAPI, Header
 from loguru import logger
 from commonts.logger import init_logging
 from commonts.settings import settings
-from tg_bot.bot import bot, dp
-from typing import Annotated
+from tg_bot.bot import bot
 from uvicorn import run
-from aiogram import types
 from contextlib import asynccontextmanager
-from tg_bot import handlers
 from commonts.scheduler_manager import scheduler_manager
 from api import router
 
@@ -42,19 +39,6 @@ async def lifespan(application: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 app.include_router(router)
-
-
-@app.post(settings.webhook_path)
-async def bot_webhook(update: dict,
-                      x_telegram_bot_api_secret_token: Annotated[str | None, Header()] = None) -> None | dict:
-    """ Register webhook endpoint for telegram bot"""
-    if x_telegram_bot_api_secret_token != settings.secret_token:
-        logger.error(f"Wrong secret token ! {x_telegram_bot_api_secret_token}")
-        return {"status": "error", "message": "Wrong secret token !"}
-    telegram_update = types.Update(**update)
-    await dp.feed_webhook_update(bot=bot, update=telegram_update)
-
-
 
 if __name__ == '__main__':
     init_logging()
