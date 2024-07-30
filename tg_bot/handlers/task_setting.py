@@ -13,6 +13,7 @@ from aiogram.types import Message
 from tg_bot.bot import telegram_router, bot
 from commonts.storage_manager import timer_task_storage
 from commonts.scheduler_manager import scheduler_manager
+from tg_bot.handlers.timer_scan import do_scan
 
 
 @telegram_router.message(Command("list_keywords"))
@@ -75,19 +76,12 @@ async def set_sem(message: Message) -> None:
         await message.answer('set sem fail only num and > 1')
 
 
-async def send_tg():
-    chat_ids = timer_task_storage.get_value('chat_ids', [])
-    for x in chat_ids:
-        logger.info(f'send message to {x}')
-        await bot.send_message(x, 'this is a test')
-
-
 @telegram_router.message(Command("join"))
 async def join_team(message: Message) -> None:
     timer_task_storage.add_to_key('chat_ids', message.chat.id)
     logger.info(f'{message.chat.id} join success')
     await message.answer("Success to join")
-    status = scheduler_manager.add_task(send_tg, 'timer_scan')
+    status = scheduler_manager.add_task(do_scan, 'timer_scan')
     if status:
         logger.info(f'timer_scan start success by {message.chat.id}')
         await message.answer("Start timer_scan")
