@@ -106,7 +106,7 @@ async def do_scan() -> None:
         history_list.append({now.strftime('%Y-%m-%d %H:%M:%S'): filename})
         history_list = history_list[-50:]
         history_html_storage.set_value('history', history_list)
-        text = f'访问以下网站查看结果\nhttps://tg.jiamid.com/{filename}'
+        text = f'访问以下网站查看结果\nhttps://tg.jiamid.com/result/{filename}'
         for chat_id in chat_ids:
             await send_message_to_bot(chat_id, text)
     logger.info('success to end scan task')

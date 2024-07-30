@@ -15,6 +15,7 @@ from aiogram import types
 from contextlib import asynccontextmanager
 from tg_bot import handlers
 from commonts.scheduler_manager import scheduler_manager
+from api import router
 
 
 async def init_scheduler():
@@ -40,6 +41,7 @@ async def lifespan(application: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
+app.include_router(router)
 
 
 @app.post(settings.webhook_path)
@@ -52,17 +54,6 @@ async def bot_webhook(update: dict,
     telegram_update = types.Update(**update)
     await dp.feed_webhook_update(bot=bot, update=telegram_update)
 
-
-@app.get("/task_list")
-async def task_list():
-    jobs = scheduler_manager.scheduler.get_jobs()  # 获取全部的jobs
-    jobs_info = []
-    for job in jobs:
-        info = {}
-        info['id'] = job.id
-        info['next_run_time'] = job.next_run_time
-        jobs_info.append(info)
-    return jobs_info
 
 
 if __name__ == '__main__':
