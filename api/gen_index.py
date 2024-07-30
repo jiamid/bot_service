@@ -13,7 +13,7 @@ from commonts.storage_manager import history_html_storage
 router = APIRouter()
 
 
-@router.get('/', response_model=HTMLResponse)
+@router.get('/', response_class=HTMLResponse)
 async def gen_index():
     return generate_index_html()
 
