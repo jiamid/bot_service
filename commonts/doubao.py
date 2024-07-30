@@ -36,7 +36,8 @@ class DouBaoBot:
                 'url': img_url,
                 'tips': tips
             }
-        except:
+        except Exception as e:
+            logger.error(e)
             return {}
 
 

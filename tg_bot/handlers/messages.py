@@ -49,6 +49,7 @@ async def echo(message: types.Message) -> None:
 
 @telegram_router.message("画" in F.text)
 async def handle_draw(message: Message):
+    await message.reply('Get')
     prompt = message.text
     result = await doubao_bot.text_to_img(prompt)
     img = result.get('url')
