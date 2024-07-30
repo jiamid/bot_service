@@ -14,12 +14,12 @@ from uvicorn import run
 from aiogram import types
 from contextlib import asynccontextmanager
 from tg_bot import handlers
-from commonts.aps_scheduler import scheduler
+from commonts.scheduler_manager import scheduler_manager
 
 
 async def init_scheduler():
     logger.info("🚀 Starting scheduler")
-    scheduler.start()
+    scheduler_manager.run()
 
 
 @asynccontextmanager
@@ -52,9 +52,10 @@ async def bot_webhook(update: dict,
     telegram_update = types.Update(**update)
     await dp.feed_webhook_update(bot=bot, update=telegram_update)
 
+
 @app.get("/task_list")
 async def task_list():
-    jobs = scheduler.get_jobs()  # 获取全部的jobs
+    jobs = scheduler_manager.scheduler.get_jobs()  # 获取全部的jobs
     jobs_info = []
     for job in jobs:
         info = {}
@@ -62,6 +63,7 @@ async def task_list():
         info['next_run_time'] = job.next_run_time
         jobs_info.append(info)
     return jobs_info
+
 
 if __name__ == '__main__':
     init_logging()

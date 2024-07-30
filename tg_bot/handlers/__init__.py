@@ -5,5 +5,5 @@
 # @File    : __init__.py.py
 # @Software: PyCharm
 from . import messages
-from . import tasks
 from . import proxy_setting
+from . import task_setting
