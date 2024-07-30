@@ -28,13 +28,14 @@ async def list_keywords(message: Message) -> None:
         await message.answer('list keyword error')
 
 
-@telegram_router.message(Command("add_keywords"))
-async def add_keywords(message: Message) -> None:
+@telegram_router.message(Command("add_keyword"))
+async def add_keyword(message: Message) -> None:
     try:
         args = message.text.split()[1:]
         keyword = args[0]
         timer_task_storage.add_to_key('keywords', keyword)
         text = f"add Keyword:{keyword} success"
+        logger.info(text)
         await message.answer(text)
     except Exception as e:
         print(e)
@@ -42,13 +43,14 @@ async def add_keywords(message: Message) -> None:
         await message.answer('add keyword error,check arg')
 
 
-@telegram_router.message(Command("del_keywords"))
-async def del_keywords(message: Message) -> None:
+@telegram_router.message(Command("del_keyword"))
+async def del_keyword(message: Message) -> None:
     try:
         args = message.text.split()[1:]
         keyword = args[0]
         timer_task_storage.del_from_key('keywords', keyword)
         text = f"del Keyword:{keyword} success"
+        logger.info(text)
         await message.answer(text)
     except:
         logger.error(f'del keyword fail')
