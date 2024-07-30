@@ -7,7 +7,7 @@
 from loguru import logger
 from datetime import datetime
 from collections import defaultdict
-from storage_manager import history_html_storage
+from .storage_manager import history_html_storage
 import os
 
 dir_path = 'ad_html'
