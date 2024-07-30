@@ -25,6 +25,14 @@ async def cmd_id(message: Message) -> None:
 @telegram_router.message(CommandStart())
 async def cmd_start(message: Message) -> None:
     await message.answer(f'*Hello {to_escape_string(message.from_user.first_name)}*\n'
+                         f'\n`画xxxxxx`'
+                         f'\n`/help`'
+                         f'\n\n', parse_mode='MarkdownV2')
+
+
+@telegram_router.message(Command("help"))
+async def cmd_start(message: Message) -> None:
+    await message.answer(f'*Hello {to_escape_string(message.from_user.first_name)}*\n'
                          f'_Region:_\n'
                          f'{proxy_manager.get_keys_str()}\n'
                          f'\n`/list_keywords`'
@@ -56,15 +64,16 @@ async def hello(message: types.Message) -> None:
         await message.answer("Nice try!")
 
 
-# @telegram_router.message(F.text == "画")
-# async def handle_draw(message: Message):
-#     await message.reply('Get')
-#     prompt = message.text
-#     doubao_bot = DouBaoBot()
-#     result = await doubao_bot.text_to_img(prompt)
-#     img = result.get('url')
-#     tips = result.get('tips')
-#     if img:
-#         await message.reply_photo(img)
-#     if tips:
-#         await message.reply(tips)
+@telegram_router.message(F.text.contains("画"))
+async def handle_draw(message: Message):
+    get_flag = await message.reply('Get')
+    prompt = message.text
+    doubao_bot = DouBaoBot()
+    result = await doubao_bot.text_to_img(prompt)
+    img = result.get('url')
+    tips = result.get('tips')
+    if img:
+        await message.reply_photo(img)
+    if tips:
+        await message.reply(tips)
+    await get_flag.delete()

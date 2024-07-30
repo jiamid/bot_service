@@ -13,6 +13,7 @@ from uvicorn import run
 from contextlib import asynccontextmanager
 from commonts.scheduler_manager import scheduler_manager
 from api import router
+from tg_bot import handlers
 
 
 async def init_scheduler():
