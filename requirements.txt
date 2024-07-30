@@ -5,3 +5,5 @@ loguru~=0.7.2
 lxml~=5.2.2
 pydantic-settings~=2.3.4
 APScheduler~=3.10.4
+volcengine~=1.0.148
+cffi

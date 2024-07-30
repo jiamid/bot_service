@@ -47,7 +47,7 @@ async def echo(message: types.Message) -> None:
         await message.answer("Nice try!")
 
 
-@telegram_router.message_handler(lambda message: re.search(r'画', message.text, re.IGNORECASE))
+@telegram_router.message("画" in F.text)
 async def handle_draw(message: Message):
     prompt = message.text
     result = await doubao_bot.text_to_img(prompt)

@@ -5,6 +5,7 @@ ENV PYTHONUNBUFFERED 1
 # RUN apt-get install -y nodejs
 RUN apt update
 RUN apt install -y libgl1-mesa-glx
+RUN apt install libffi-dev
 RUN mkdir /code
 WORKDIR /code
 COPY requirements.txt /code/
