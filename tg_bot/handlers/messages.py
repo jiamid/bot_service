@@ -13,6 +13,8 @@ from aiogram.types import Message
 from tg_bot.bot import telegram_router
 from commonts.util import to_escape_string
 from commonts.storage_manager import proxy_manager
+from commonts.doubao import doubao_bot
+import re
 
 
 @telegram_router.message(Command("id"))
@@ -43,6 +45,18 @@ async def echo(message: types.Message) -> None:
     except Exception as e:
         logger.error(f"Can't send message - {e}")
         await message.answer("Nice try!")
+
+
+@telegram_router.message_handler(lambda message: re.search(r'画', message.text, re.IGNORECASE))
+async def handle_draw(message: Message):
+    prompt = message.text
+    result = await doubao_bot.text_to_img(prompt)
+    img = result.get('url')
+    tips = result.get('tips')
+    if img:
+        await message.reply_photo(img)
+    if tips:
+        await message.reply(tips)
 
 
 @telegram_router.message(F.text == "ping")
