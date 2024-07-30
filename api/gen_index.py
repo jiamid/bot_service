@@ -31,7 +31,7 @@ def generate_index_table():
         for date_str, result_id in item.items():
             table_html += "<tr>"
             table_html += f"<td>{date_str}</td>"
-            table_html += f"<td><a href='/result/{result_id}'>{result_id}</a></td>"
+            table_html += f"<td><a href='/r/{result_id}'>{result_id}</a></td>"
             table_html += "</tr>"
     table_html += "</table></div>"
     return table_html
