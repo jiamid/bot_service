@@ -79,6 +79,19 @@ async def scan_one(keyword: str, os: int, region: str, chat_ids: list,
         logger.error(f'run {keyword} {os} {region} fail {e}')
 
 
+def decimal_to_base36(n):
+    if n == 0:
+        return '0'
+    digits = '0123456789abcdefghijklmnopqrstuvwxyz'
+    result = ''
+
+    while n > 0:
+        n, remainder = divmod(n, 36)
+        result = digits[remainder] + result
+
+    return result
+
+
 async def do_scan() -> None:
     """Send the alarm message."""
     keyword_list = timer_task_storage.get_value('keywords', [])
@@ -100,7 +113,8 @@ async def do_scan() -> None:
     if result:
         now = datetime.now()
         now_ts = int(now.timestamp())
-        filename = f'r{now_ts}'
+        ts_id = decimal_to_base36(now_ts)
+        filename = f'r{ts_id}'
         json_manager.save_file(result, filename)
         history_list: list = history_html_storage.get_value('history', [])
         history_list.append({now.strftime('%Y-%m-%d %H:%M:%S'): filename})
