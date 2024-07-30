@@ -39,18 +39,3 @@ class DouBaoBot:
         except Exception as e:
             logger.error(e)
             return {}
-
-
-doubao_bot = DouBaoBot()
-
-
-async def test_bot():
-    bot = DouBaoBot()
-    result = await bot.text_to_img('画一个机器人')
-    logger.info(f'bot recall:{result}')
-
-
-if __name__ == '__main__':
-    import asyncio
-
-    asyncio.run(test_bot())

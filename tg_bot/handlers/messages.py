@@ -13,7 +13,7 @@ from aiogram.types import Message
 from tg_bot.bot import telegram_router
 from commonts.util import to_escape_string
 from commonts.storage_manager import proxy_manager
-from commonts.doubao import doubao_bot
+from commonts.doubao import DouBaoBot
 import re
 
 
@@ -60,6 +60,7 @@ async def hello(message: types.Message) -> None:
 async def handle_draw(message: Message):
     await message.reply('Get')
     prompt = message.text
+    doubao_bot = DouBaoBot()
     result = await doubao_bot.text_to_img(prompt)
     img = result.get('url')
     tips = result.get('tips')
