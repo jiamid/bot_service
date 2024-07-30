@@ -17,6 +17,8 @@ class Settings(BaseSettings):
     base_webhook_url: str = 'https://my.host.name'
     webhook_path: str = '/path/to/webhook'
     secret_token: str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'  # Additional security token for webhook
+    doubao_ak: str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'  # Additional security token for webhook
+    doubao_sk: str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'  # Additional security token for webhook
 
 
 settings = Settings()
