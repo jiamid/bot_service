@@ -47,7 +47,16 @@ async def echo(message: types.Message) -> None:
         await message.answer("Nice try!")
 
 
-@telegram_router.message("画" in F.text)
+@telegram_router.message(F.text == "ping")
+async def hello(message: types.Message) -> None:
+    try:
+        await message.answer("pong")
+    except Exception as e:
+        logger.error(f"Can't send message - {e}")
+        await message.answer("Nice try!")
+
+
+@telegram_router.message(F.text == "画")
 async def handle_draw(message: Message):
     await message.reply('Get')
     prompt = message.text
@@ -58,12 +67,3 @@ async def handle_draw(message: Message):
         await message.reply_photo(img)
     if tips:
         await message.reply(tips)
-
-
-@telegram_router.message(F.text == "ping")
-async def hello(message: types.Message) -> None:
-    try:
-        await message.answer("pong")
-    except Exception as e:
-        logger.error(f"Can't send message - {e}")
-        await message.answer("Nice try!")
