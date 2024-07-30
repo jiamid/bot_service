@@ -13,16 +13,23 @@ from uvicorn import run
 from contextlib import asynccontextmanager
 from commonts.scheduler_manager import scheduler_manager
 from api import router
+from tg_bot.handlers.timer_scan import do_scan
+from commonts.storage_manager import timer_task_storage
 
 
 async def init_scheduler():
     logger.info("🚀 Starting scheduler")
     scheduler_manager.run()
+    chat_ids = timer_task_storage.get_value('chat_ids', [])
+    if chat_ids:
+        status = scheduler_manager.add_task(do_scan, 'timer_scan')
+        if status:
+            logger.info(f'🚀 timer_scan start success')
 
 
 @asynccontextmanager
 async def lifespan(application: FastAPI):
-    logger.info("🚀 Starting application")
+    logger.info("🚀 Starting Application")
     webhook_info = await bot.get_webhook_info()
     if webhook_info.url != f'{settings.base_webhook_url}{settings.webhook_path}':
         logger.info(f'set webhook {settings.webhook_path}')
@@ -34,7 +41,7 @@ async def lifespan(application: FastAPI):
         )
     await init_scheduler()
     yield
-    logger.info("⛔ Stopping application")
+    logger.info("⛔ Stopping Application")
 
 
 app = FastAPI(lifespan=lifespan)
