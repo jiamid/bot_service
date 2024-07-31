@@ -1,6 +1,6 @@
 version: "3"
 services:
-  tg_bot:
+  bot_service:
     build: .
     command: python main.py
     volumes:
