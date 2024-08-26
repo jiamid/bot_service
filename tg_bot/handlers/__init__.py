@@ -7,3 +7,4 @@
 from . import messages
 from . import proxy_setting
 from . import task_setting
+from . import inline_messages
