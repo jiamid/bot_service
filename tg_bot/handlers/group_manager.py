@@ -14,6 +14,7 @@ from aiogram.exceptions import TelegramBadRequest
 import asyncio
 from aiogram.types import Message
 from tg_bot.bot import telegram_router, bot
+import random
 
 
 # 状态机类，用于跟踪用户是否验证
@@ -50,20 +51,42 @@ async def update_group_id(message: Message) -> None:
         await message.answer(f"Now Chat {chat_id} is Not Group")
 
 
+async def gen_verify_question():
+    a = random.randint(0, 10)
+    b = random.randint(0, 10)
+    c = a + b
+    d = random.randint(c + 1, c + 10)
+    e = random.randint(c - 10, c - 1)
+    inline_keyboard = [
+        InlineKeyboardButton(text=f"{d}", callback_data="verify_fail"),
+        InlineKeyboardButton(text=f"{e}", callback_data="verify_fail"),
+        InlineKeyboardButton(text=f"{c}", callback_data="verify_user"),
+    ]
+    random.shuffle(inline_keyboard)
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[inline_keyboard])
+    return keyboard, f'{a}+{b}=?'
+
+
+async def send_verify_to_group(group_id, user_id, nickname):
+    user_mention = f'<a href="tg://user?id={user_id}">@{nickname}</a>'
+    keyboard, question = await gen_verify_question()
+    message = f"{user_mention}请进行验证，否则你将会被移除群组。{question}"
+    verify_message = await bot.send_message(group_id, message, parse_mode='html',
+                                            reply_markup=keyboard)
+    return verify_message
+
+
 @telegram_router.chat_member()
 async def on_user_join(chat_member: types.ChatMemberUpdated, state: FSMContext):
     user_id = chat_member.new_chat_member.user.id
+    nickname = chat_member.new_chat_member.user.first_name
     group_id = chat_member.chat.id
     status = chat_member.new_chat_member.status
     if status != 'member':
         return
 
-    keyboard = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="点击验证", callback_data="verify_user")]
-    ])
+    verify_message = await send_verify_to_group(group_id, user_id, nickname)
 
-    verify_message = await bot.send_message(group_id, "请点击下方按钮进行验证，否则你将会被移除群组。",
-                                            reply_markup=keyboard)
     # 将用户状态设置为等待验证
     await state.set_state(Verification.waiting_for_verification)
     await state.update_data(
@@ -73,7 +96,7 @@ async def on_user_join(chat_member: types.ChatMemberUpdated, state: FSMContext):
     )
 
     # 设置超时时间为10秒，10秒后检查用户是否验证
-    await asyncio.sleep(10)
+    await asyncio.sleep(60)
     # 检查用户是否验证
     current_state = await state.get_state()
     if current_state == Verification.waiting_for_verification.state:
