@@ -15,6 +15,9 @@ import asyncio
 from aiogram.types import Message
 from tg_bot.bot import telegram_router, bot
 import random
+from commonts.storage_manager import group_storage
+from aiogram.types import ChatMember
+from aiogram import F
 
 
 # 状态机类，用于跟踪用户是否验证
@@ -37,16 +40,30 @@ async def check_if_group_chat(chat_id: int):
         return False
 
 
-group_ids = set()
+async def get_bot_permissions(chat_id: int):
+    is_admin = False
+    try:
+        # 获取机器人的信息
+        chat_member: ChatMember = await bot.get_chat_member(chat_id=chat_id, user_id=bot.id)
+        # 打印机器人的权限
+        if chat_member.status in ['administrator', 'creator']:
+            print(f"机器人是管理员，权限如下：{chat_member}")
+            is_admin = True
+        else:
+            print(f"机器人是普通成员，权限如下：{chat_member}")
+    except Exception as e:
+        print(f"无法获取权限信息: {e}")
+    return is_admin
 
 
-@telegram_router.message(Command("gid"))
-async def update_group_id(message: Message) -> None:
+@telegram_router.message(Command("register"))
+async def register_group(message: Message) -> None:
     chat_id = message.chat.id
     is_group = await check_if_group_chat(chat_id)
     if is_group:
         await message.answer(f"GroupId:{chat_id}")
-        group_ids.add(chat_id)
+        is_admin = await get_bot_permissions(chat_id)
+        group_storage.set_value(chat_id, is_admin)
     else:
         await message.answer(f"Now Chat {chat_id} is Not Group")
 
@@ -120,3 +137,11 @@ async def process_verification(callback_query: types.CallbackQuery, state: FSMCo
         data = await state.get_data()
         await bot.delete_message(chat_id=data['group_id'], message_id=data['message_id'])
         await state.clear()
+
+
+@telegram_router.message(F.text.contains("日"))
+async def handle_ban_text(message: Message):
+    source_text = message.text
+    await bot.delete_message(chat_id=message.chat.id, message_id=message.message_id)
+    modified_text = source_text.replace('日', '*')
+    await message.answer(modified_text)

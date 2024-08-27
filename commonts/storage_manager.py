@@ -137,6 +137,9 @@ history_html_storage = StorageManager('history_html', {
     'history': []
 })
 
+group_storage = StorageManager('group', {
+
+})
 
 class ProxyManager:
     proxy_map = proxys_storage.data
