@@ -153,3 +153,8 @@ class ProxyManager:
 
 
 proxy_manager = ProxyManager()
+
+
+iptable_storage = StorageManager('iptable', {
+    'white': []
+})

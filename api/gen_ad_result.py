@@ -4,19 +4,25 @@
 # @Email   : jiamid@qq.com
 # @File    : gen_ad_result.py
 # @Software: PyCharm
-from fastapi import APIRouter
-from commonts.json_manager import json_manager
 from datetime import datetime
 from collections import defaultdict
+from fastapi import APIRouter,Request, HTTPException
 from fastapi.responses import HTMLResponse
+from commonts.util import is_white_ip
+from commonts.json_manager import json_manager
 
 router = APIRouter()
 
 
 @router.get('/r/{result_id}', response_class=HTMLResponse)
-async def gen_ad_result(result_id: str):
-    data = json_manager.read_file(result_id)
-    return generate_ad_html(data)
+async def gen_ad_result(result_id: str,req:Request):
+    if is_white_ip(req):
+        data = json_manager.read_file(result_id)
+        return generate_ad_html(data)
+    else:
+        raise HTTPException(status_code=404, detail='Not Found')
+
+    
 
 
 def generate_div_table_v2(data):
@@ -29,7 +35,8 @@ def generate_div_table_v2(data):
         region = item['region']
         domain = item['domain']
         create_at = item['create_at']
-        grouped_data[keyword][os][region].append({'domain': domain, 'create_at': create_at})
+        grouped_data[keyword][os][region].append(
+            {'domain': domain, 'create_at': create_at})
 
     table_html = """<div class="table_box">
         <table>
@@ -37,7 +44,8 @@ def generate_div_table_v2(data):
     table_html += f"<caption>广告搜索结果</caption>"
     table_html += '<tr><th>Keyword</th><th>OS</th><th>Region</th><th>Domains</th><th>Time</th></tr>'
     for keyword, os_dict in grouped_data.items():
-        keyword_rowspan = sum(sum(len(domains) for domains in region_dict.values()) for region_dict in os_dict.values())
+        keyword_rowspan = sum(sum(len(domains) for domains in region_dict.values())
+                              for region_dict in os_dict.values())
         keyword_first_row = True
         for os, region_dict in os_dict.items():
             os_rowspan = sum(len(domains) for domains in region_dict.values())
@@ -50,7 +58,8 @@ def generate_div_table_v2(data):
                     this_create_at = domain_dict['create_at']
                     table_html += '<tr>'
                     if keyword_first_row:
-                        table_html += f'<td rowspan="{keyword_rowspan}">{keyword}</td>'
+                        table_html += f'<td rowspan="{
+                            keyword_rowspan}">{keyword}</td>'
                         keyword_first_row = False
 
                     if os_first_row:
@@ -58,7 +67,8 @@ def generate_div_table_v2(data):
                         os_first_row = False
 
                     if region_first_row:
-                        table_html += f'<td rowspan="{region_rowspan}">{region}</td>'
+                        table_html += f'<td rowspan="{
+                            region_rowspan}">{region}</td>'
                         region_first_row = False
 
                     table_html += f'<td>{domain}</td><td>{this_create_at}</td>'

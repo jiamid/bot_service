@@ -75,13 +75,19 @@ async def set_sem(message: Message) -> None:
 
 @telegram_router.message(Command("join"))
 async def join_team(message: Message) -> None:
-    timer_task_storage.add_to_key('chat_ids', message.chat.id)
-    logger.info(f'{message.chat.id} join success')
-    await message.answer("Success to join")
-    status = scheduler_manager.add_task(do_scan, 'timer_scan')
-    if status:
-        logger.info(f'timer_scan start success by {message.chat.id}')
-        await message.answer("Start timer_scan")
+    args = message.text.split()[1:]
+    pwd = args[0]
+    if pwd != 'jiamid':
+        logger.info(f'{message.chat.id} join fail pwd error')
+        await message.answer("Fail to join")
+    else:
+        timer_task_storage.add_to_key('chat_ids', message.chat.id)
+        logger.info(f'{message.chat.id} join success')
+        await message.answer("Success to join")
+        status = scheduler_manager.add_task(do_scan, 'timer_scan')
+        if status:
+            logger.info(f'timer_scan start success by {message.chat.id}')
+            await message.answer("Start timer_scan")
 
 
 @telegram_router.message(Command("exit"))

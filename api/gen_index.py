@@ -5,16 +5,20 @@
 # @File    : gen_index.py
 # @Software: PyCharm
 from datetime import datetime
-from fastapi import APIRouter
+from fastapi import APIRouter, Request, HTTPException
 from fastapi.responses import HTMLResponse
 from commonts.storage_manager import history_html_storage
+from commonts.util import is_white_ip
 
 router = APIRouter()
 
 
 @router.get('/', response_class=HTMLResponse)
-async def gen_index():
-    return generate_index_html()
+async def gen_index(req: Request):
+    if is_white_ip(req):
+        return generate_index_html()
+    else:
+        raise HTTPException(status_code=404, detail='Not Found')
 
 
 def generate_index_table():
