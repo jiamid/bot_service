@@ -19,7 +19,7 @@ import re
 
 @telegram_router.message(Command("id"))
 async def cmd_id(message: Message) -> None:
-    await message.answer(f"Your ID: {message.from_user.id}")
+    await message.answer(f"Your ID: {message.from_user.id},Chat ID: {message.chat.id}")
 
 
 @telegram_router.message(CommandStart())
