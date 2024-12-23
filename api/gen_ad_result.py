@@ -58,8 +58,7 @@ def generate_div_table_v2(data):
                     this_create_at = domain_dict['create_at']
                     table_html += '<tr>'
                     if keyword_first_row:
-                        table_html += f'<td rowspan="{
-                            keyword_rowspan}">{keyword}</td>'
+                        table_html += f'<td rowspan="{keyword_rowspan}">{keyword}</td>'
                         keyword_first_row = False
 
                     if os_first_row:
