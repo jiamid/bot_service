@@ -120,6 +120,7 @@ timer_task_storage = StorageManager('timer_task', {
         # '阿里云国际站',
         # '腾讯云国际站'
     ],
+    'targets': [],
     'chat_ids': [],
     'sem': 5
 })
@@ -141,6 +142,7 @@ group_storage = StorageManager('group', {
 
 })
 
+
 class ProxyManager:
     proxy_map = proxys_storage.data
 
@@ -156,7 +158,6 @@ class ProxyManager:
 
 
 proxy_manager = ProxyManager()
-
 
 iptable_storage = StorageManager('iptable', {
     'white': []
