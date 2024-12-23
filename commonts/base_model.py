@@ -9,4 +9,4 @@ from pydantic import BaseModel, Field
 class BaseResponseModel(BaseModel):
     code: int = Field(default=0)
     msg: str = Field(default='success')
-    data: any = Field(default=None)
+    data: None = Field(default=None)
