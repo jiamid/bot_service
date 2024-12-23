@@ -66,8 +66,7 @@ def generate_div_table_v2(data):
                         os_first_row = False
 
                     if region_first_row:
-                        table_html += f'<td rowspan="{
-                            region_rowspan}">{region}</td>'
+                        table_html += f'<td rowspan="{region_rowspan}">{region}</td>'
                         region_first_row = False
 
                     table_html += f'<td>{domain}</td><td>{this_create_at}</td>'
