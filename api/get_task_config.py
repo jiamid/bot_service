@@ -23,5 +23,5 @@ class TaskConfigRespModel(BaseResponseModel):
 @router.get("/get_task_config", response_model=TaskConfigRespModel)
 async def get_task_config():
     keywords = timer_task_storage.get_value("keywords", [])
-    targets = timer_task_storage.get_value("target", [])
+    targets = timer_task_storage.get_value("targets", [])
     return TaskConfigRespModel(data=TaskConfigModel(keywords=keywords, targets=targets))
