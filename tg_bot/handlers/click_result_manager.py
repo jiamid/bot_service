@@ -30,7 +30,7 @@ async def list_click_result(message: Message) -> None:
     try:
         data = click_task_manager.data.data
         if data:
-            _str = '\n'.join([f'{k}:{v}' for k, v in data.items()])
+            _str = '\n'.join([f'[{k}]({v})' for k, v in data.items()])
             text = f"点击情况:\n{_str}"
         else:
             text = f"暂无点击"
