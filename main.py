@@ -45,7 +45,11 @@ async def lifespan(application: FastAPI):
     logger.info("⛔ Stopping Application")
 
 
-app = FastAPI(lifespan=lifespan)
+app = FastAPI(lifespan=lifespan,
+              title='BotService',
+              docs_url='/docs' if settings.debug else None,
+              redoc_url='/redoc' if settings.debug else None,
+              )
 app.include_router(router)
 
 if __name__ == '__main__':
