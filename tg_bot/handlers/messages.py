@@ -41,6 +41,7 @@ async def cmd_start(message: Message) -> None:
                          f'\n`/list_targets`'
                          f'\n`/add_target 目标`'
                          f'\n`/del_target 目标`'
+                         f'\n`/list_click_result`'
                          f'\n`/join`'
                          f'\n`/exit`'
                          f'\n`/list_proxys`'
