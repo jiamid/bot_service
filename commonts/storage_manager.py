@@ -194,7 +194,7 @@ class ClickTaskResultManager:
         self.add(target)
         now = datetime.datetime.now()
         now_str = now.strftime('%m-%d %H:%M:%S')
-        self.log_list.append(f'({now_str})[{keyword}->{target}]')
+        self.log_list.append(f'[{now_str}]{keyword}->{target}')
         self.log_list = self.log_list[-100:]
 
     def remove(self, target):
