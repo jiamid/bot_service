@@ -14,8 +14,11 @@ from commonts.storage_manager import click_task_manager
 async def list_click_result(message: Message) -> None:
     try:
         data = click_task_manager.log_list
-        _str = '\n'.join(data)
-        text = f"点击情况:\n{_str}"
+        if data:
+            _str = '\n'.join(data)
+            text = f"点击情况:\n{_str}"
+        else:
+            text = f"暂无点击"
         await message.answer(text)
     except Exception as e:
         logger.error(f'list click result fail e: {e}')
