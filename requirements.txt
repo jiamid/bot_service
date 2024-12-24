@@ -3,6 +3,7 @@ aiohttp~=3.9.5
 fastapi~=0.115.6
 loguru~=0.7.2
 lxml~=5.3.0
+pydantic~=2.8.2
 pydantic-settings~=2.3.4
 APScheduler~=3.10.4
 volcengine~=1.0.148

@@ -4,32 +4,17 @@
 # @Email   : jiamid@qq.com
 # @File    : timer_scan.py
 # @Software: PyCharm
-from commonts.async_task_manager import AsyncTaskManager
-from tg_bot.bot import bot
+import itertools
+from loguru import logger
+from datetime import datetime
 from commonts.storage_manager import timer_task_storage
 from commonts.storage_manager import proxy_manager
 from commonts.storage_manager import history_html_storage
 from commonts.json_manager import json_manager
 from commonts.util import to_escape_string
 from commonts.search import Google
-from loguru import logger
-import asyncio
-from datetime import datetime
-import itertools
-
-
-async def send_message_to_bot(chat_id, text, parse_mode=None):
-    flag = True
-    times = 1
-    while flag and times < 3:
-        try:
-            await bot.send_message(chat_id, text=text, parse_mode=parse_mode)
-            flag = False
-        except Exception as e:
-            logger.error(f'send message fail {times} e:{e}')
-            times += 1
-            await asyncio.sleep(1)
-
+from commonts.async_task_manager import AsyncTaskManager
+from tg_bot.bot import send_message_to_bot
 
 os_map = {
     0: None,
