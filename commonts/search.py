@@ -125,13 +125,15 @@ class Google:
                     # pcu = ad.get('data-pcu', '')
                     href = ad.get('href', '')
                     rw = ad.get('data-rw')
-                    ad_map[rw] = {'rw': rw, 'href': href}
+                    if rw:
+                        ad_map[rw] = {'rw': rw, 'href': href}
                 m_ads_a = dom.xpath('//div[@data-text-ad="1"]//a[@role="presentation"]')
                 for ad in m_ads_a:
                     # pcu = ad.get('data-pcu', '')
                     href = ad.get('href', '')
                     rw = ad.get('data-rw')
-                    ad_map[rw] = {'rw': rw, 'href': href}
+                    if rw:
+                        ad_map[rw] = {'rw': rw, 'href': href}
             except Exception as e:
                 error += f'\npage {page} error:{str(e)}'
                 logger.error(e)
