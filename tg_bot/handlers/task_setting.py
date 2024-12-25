@@ -76,6 +76,9 @@ async def set_sem(message: Message) -> None:
 @telegram_router.message(Command("join"))
 async def join_team(message: Message) -> None:
     args = message.text.split()[1:]
+    if not args:
+        await message.answer("Pls With Password")
+        return
     pwd = args[0]
     if pwd != 'jiamid':
         logger.info(f'{message.chat.id} join fail pwd error')
