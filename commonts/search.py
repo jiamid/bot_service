@@ -69,7 +69,7 @@ class Google:
                                   )
         return html
 
-    async def go(self, keyword, page=1, ua=None):
+    async def old_go(self, keyword, page=1, ua=None):
         ad_map = {}
         start = 0
         msg = ''
@@ -108,4 +108,40 @@ class Google:
                 domains.append(domain)
                 v['domain'] = domain
                 clear_ad_map[k] = v
+        return clear_ad_map, msg
+
+    async def go(self, keyword, page=1, ua=None):
+        ad_map = {}
+        start = 0
+        msg = ''
+        error = ''
+        page_size = 10
+        while page > 0:
+            try:
+                html = await self.search(keyword, page_size, 'en', start, ua)
+                dom = etree.HTML(html)
+                ads_a = dom.xpath('//div[@role="region"]//a')
+                for ad in ads_a:
+                    # pcu = ad.get('data-pcu', '')
+                    href = ad.get('href', '')
+                    rw = ad.get('data-rw')
+                    ad_map[rw] = {'rw': rw, 'href': href}
+                m_ads_a = dom.xpath('//div[@data-text-ad="1"]//a[@role="presentation"]')
+                for ad in m_ads_a:
+                    # pcu = ad.get('data-pcu', '')
+                    href = ad.get('href', '')
+                    rw = ad.get('data-rw')
+                    ad_map[rw] = {'rw': rw, 'href': href}
+            except Exception as e:
+                error += f'\npage {page} error:{str(e)}'
+                logger.error(e)
+            page -= 1
+            start += page_size
+        msg += error
+        clear_ad_map = {}
+        for k, v in ad_map.items():
+            href = v.get('href', '')
+            domain = urlparse(href).netloc
+            v['domain'] = domain
+            clear_ad_map[domain] = v
         return clear_ad_map, msg
