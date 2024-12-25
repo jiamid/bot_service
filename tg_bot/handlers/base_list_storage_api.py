@@ -22,7 +22,7 @@ class BaseListStorageApi:
 
     def register(self, register_router: Router):
         """
-        register api
+        register api to router
         """
         register_router.message(Command(f"list_{self.cmd_base_name.lower()}s"))(self.api_list)
         register_router.message(Command(f"add_{self.cmd_base_name.lower()}"))(self.api_add)
@@ -36,6 +36,9 @@ class BaseListStorageApi:
         return self
 
     async def api_list(self, message: Message) -> None:
+        """
+        /add_[cmd_base_name]s
+        """
         try:
             data = self.storage_manager.get_value(self.key, [])
             _str = '\n'.join(data)
@@ -46,6 +49,9 @@ class BaseListStorageApi:
             await message.answer(f'list {self.cmd_base_name} error')
 
     async def api_add(self, message: Message) -> None:
+        """
+        /add_[cmd_base_name] args
+        """
         try:
             args = message.text.split()[1:]
             if args:
@@ -61,6 +67,9 @@ class BaseListStorageApi:
             await message.answer(f'add {self.cmd_base_name.title()} error, check arg')
 
     async def api_del(self, message: Message) -> None:
+        """
+        /del_[cmd_base_name] args
+        """
         try:
             args = message.text.split()[1:]
             if args:
