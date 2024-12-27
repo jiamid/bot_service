@@ -69,7 +69,10 @@ def generate_div_table_v2(data):
                         table_html += f'<td rowspan="{region_rowspan}">{region}</td>'
                         region_first_row = False
 
-                    table_html += f'<td>{domain}</td><td>{this_create_at}</td>'
+                    domain_str = domain
+                    if len(domain) > 30 and domain.startswith('http'):
+                        domain_str = f'<a href="{domain}" target="_blank">*点击访问</a>'
+                    table_html += f'<td>{domain_str}</td><td>{this_create_at}</td>'
                     table_html += '</tr>'
         table_html += '<tr class="blank_tr"> <td colspan="5"></td></tr>'
     table_html += '</table></div>'

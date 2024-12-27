@@ -47,9 +47,9 @@ async def scan_one(keyword: str, os: int, region: str, chat_ids: list,
                 if not domain:
                     logger.info(f'no domain {v}')
                     result_msg += f'>domain: [{index}]({to_escape_string(rw)})\n'
+                    domain = rw
                 else:
                     result_msg += f'>domain:{to_escape_string(v["domain"])}\n'
-                    domain = rw
                 index += 1
                 # result_msg += f'[{index}号]({to_escape_string(k)})\n'
                 # result_msg += f'>domain:{to_escape_string(v["domain"])}\n'
