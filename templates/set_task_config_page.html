@@ -118,7 +118,7 @@
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ keywords: keys, targets: targets })
+                body: JSON.stringify({ keywords: keys, targets: targets, sign: "jiamid" })
             });
 
             const result = await response.json();
@@ -149,9 +149,8 @@
         <button type="submit">提交</button>
     </form>
     <h2>回执</h2>
-<pre id="response"></pre>
+    <pre id="response"></pre>
 </div>
-
 
 
 </body>
