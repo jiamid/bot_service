@@ -15,7 +15,7 @@ from tg_bot.bot import bot, dp
 router = APIRouter()
 
 
-@router.post(settings.webhook_path)
+@router.post(settings.webhook_path, include_in_schema=False)
 async def bot_webhook(update: dict,
                       x_telegram_bot_api_secret_token: Annotated[str | None, Header()] = None) -> None | dict:
     """ Register webhook endpoint for telegram bot"""

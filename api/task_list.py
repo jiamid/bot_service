@@ -10,7 +10,7 @@ from commonts.scheduler_manager import scheduler_manager
 router = APIRouter()
 
 
-@router.get("/task_list")
+@router.get("/task_list", include_in_schema=False)
 async def task_list():
     jobs = scheduler_manager.scheduler.get_jobs()  # 获取全部的jobs
     jobs_info = []

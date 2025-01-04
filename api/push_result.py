@@ -16,7 +16,7 @@ class NewTaskResultModel(BaseModel):
     target: str = Field(default='')
 
 
-@router.post("/push_result", response_model=BaseResponseModel)
+@router.post("/push_result", response_model=BaseResponseModel, include_in_schema=False)
 async def push_result(task_result: NewTaskResultModel):
     click_task_manager.log_click(task_result.target, task_result.keyword)
     return BaseResponseModel()

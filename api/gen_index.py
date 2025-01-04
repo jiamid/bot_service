@@ -13,7 +13,7 @@ from commonts.util import is_white_ip
 router = APIRouter()
 
 
-@router.get('/', response_class=HTMLResponse)
+@router.get('/', response_class=HTMLResponse, include_in_schema=False)
 async def gen_index(req: Request):
     if is_white_ip(req):
         return generate_index_html()
