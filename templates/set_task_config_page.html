@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POST Interface Test</title>
+    <script>
+        async function submitForm(event) {
+            event.preventDefault(); // 阻止默认表单提交
+            const keywords = document.getElementById("keywords").value.split(",");
+            const targets = document.getElementById("targets").value.split(",");
+            const response = await fetch("/set_task_config", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ keywords, targets })
+            });
+            const result = await response.json();
+            document.getElementById("response").textContent = JSON.stringify(result, null, 2);
+        }
+    </script>
+</head>
+<body>
+    <h1>Test POST Interface</h1>
+    <form onsubmit="submitForm(event)">
+        <label for="keywords">Key (comma-separated):</label>
+        <input type="text" id="keywords" name="keywords" required><br><br>
+
+        <label for="targets">Target (comma-separated):</label>
+        <input type="text" id="targets" name="targets" required><br><br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>Response</h2>
+    <pre id="response"></pre>
+</body>
+</html>
