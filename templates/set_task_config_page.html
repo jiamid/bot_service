@@ -3,37 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>POST Interface Test</title>
+    <title>任务设置</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .main_box {
+            margin: 20px;
+            min-width: 380px;
+            max-width: 800px;
+        }
+
+        h1, h2 {
+            color: #333;
+        }
+
+        .form-container {
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .form-group label {
+            width: 60px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .add-btn, .remove-btn {
+            margin-left: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            padding: 5px 10px;
+        }
+
+        .remove-btn {
+            background-color: #dc3545;
+        }
+
+        .add-btn:hover, .remove-btn:hover {
+            opacity: 0.8;
+        }
+
+        button[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            opacity: 0.8;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
     <script>
+        function addField(type) {
+            const container = document.getElementById(`${type}-container`);
+            const fieldGroup = document.createElement("div");
+            fieldGroup.classList.add("form-group");
+
+            const input = document.createElement("input");
+            input.type = "text";
+            input.name = type;
+            input.placeholder = `Enter ${type}`;
+            input.required = true;
+
+            const removeBtn = document.createElement("button");
+            removeBtn.classList.add("remove-btn");
+            removeBtn.textContent = "-";
+            removeBtn.type = "button";
+            removeBtn.onclick = () => fieldGroup.remove();
+
+            fieldGroup.appendChild(input);
+            fieldGroup.appendChild(removeBtn);
+            container.appendChild(fieldGroup);
+        }
+
         async function submitForm(event) {
-            event.preventDefault(); // 阻止默认表单提交
-            const keywords = document.getElementById("keywords").value.split(",");
-            const targets = document.getElementById("targets").value.split(",");
+            event.preventDefault();
+
+            const keys = Array.from(document.getElementsByName("key")).map(input => input.value);
+            const targets = Array.from(document.getElementsByName("target")).map(input => input.value);
+
             const response = await fetch("/set_task_config", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ keywords, targets })
+                body: JSON.stringify({ keywords: keys, targets: targets })
             });
+
             const result = await response.json();
             document.getElementById("response").textContent = JSON.stringify(result, null, 2);
         }
     </script>
 </head>
 <body>
-    <h1>Test POST Interface</h1>
-    <form onsubmit="submitForm(event)">
-        <label for="keywords">Key (comma-separated):</label>
-        <input type="text" id="keywords" name="keywords" required><br><br>
+<div class="main_box">
+    <h1>任务设置</h1>
+    <form class="form-container" onsubmit="submitForm(event)">
+        <h2>关键字</h2>
+        <div id="key-container">
+            <div class="form-group">
+                <input type="text" name="key" placeholder="Enter key" required>
+                <button type="button" class="add-btn" onclick="addField('key')">+</button>
+            </div>
+        </div>
 
-        <label for="targets">Target (comma-separated):</label>
-        <input type="text" id="targets" name="targets" required><br><br>
+        <h2>目标</h2>
+        <div id="target-container">
+            <div class="form-group">
+                <input type="text" name="target" placeholder="Enter target" required>
+                <button type="button" class="add-btn" onclick="addField('target')">+</button>
+            </div>
+        </div>
 
-        <button type="submit">Submit</button>
+        <button type="submit">提交</button>
     </form>
+    <h2>回执</h2>
+<pre id="response"></pre>
+</div>
 
-    <h2>Response</h2>
-    <pre id="response"></pre>
+
+
 </body>
 </html>
