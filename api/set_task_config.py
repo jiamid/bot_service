@@ -23,11 +23,11 @@ class TaskConfigRespModel(BaseResponseModel):
 
 
 @router.post("/set_task_config", response_model=TaskConfigRespModel)
-async def set_task_config(keywords: list[str], targets: list[str], sign: str):
+async def set_task_config(new_task_config: TaskConfigModel, sign: str):
     if sign != 'jiamid':
         return TaskConfigRespModel(code=403, msg='Error')
-    timer_task_storage.set_value("keywords", keywords, False)
-    timer_task_storage.set_value("targets", targets)
+    timer_task_storage.set_value("keywords", new_task_config.keywords, False)
+    timer_task_storage.set_value("targets", new_task_config.targets)
     keywords = timer_task_storage.get_value("keywords", [])
     targets = timer_task_storage.get_value("targets", [])
     return TaskConfigRespModel(data=TaskConfigModel(keywords=keywords, targets=targets))

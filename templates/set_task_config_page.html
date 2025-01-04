@@ -113,12 +113,12 @@
             const keys = Array.from(document.getElementsByName("key")).map(input => input.value);
             const targets = Array.from(document.getElementsByName("target")).map(input => input.value);
 
-            const response = await fetch("/set_task_config", {
+            const response = await fetch("/set_task_config?sign=jiamid", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ keywords: keys, targets: targets, sign: "jiamid" })
+                body: JSON.stringify({ keywords: keys, targets: targets })
             });
 
             const result = await response.json();
