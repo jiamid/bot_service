@@ -36,9 +36,10 @@ class StorageManager:
         except Exception as e:
             logger.error(f'del {key} error {e}')
 
-    def set_value(self, key, value):
+    def set_value(self, key, value, save=True):
         self.data[key] = value
-        self.save_file()
+        if save:
+            self.save_file()
 
     def add_to_key(self, key, value):
         key_list = self.data.get(key, [])

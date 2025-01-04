@@ -10,6 +10,7 @@ from api.gen_ad_result import router as result_router
 from api.bot_webhook import router as bot_router
 from api.task_list import router as task_list_router
 from api.get_task_config import router as get_task_config_router
+from api.set_task_config import router as set_task_config_router
 from api.push_result import router as push_result_router
 
 router = APIRouter()
@@ -18,4 +19,5 @@ router.include_router(result_router)
 router.include_router(bot_router)
 router.include_router(task_list_router)
 router.include_router(get_task_config_router)
+router.include_router(set_task_config_router)
 router.include_router(push_result_router)
