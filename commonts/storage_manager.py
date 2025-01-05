@@ -129,6 +129,7 @@ timer_task_storage = StorageManager('timer_task', {
         # '阿里云国际站',
         # '腾讯云国际站'
     ],
+    'click_keywords': [],  # 用于点击
     'targets': [],
     'chat_ids': [],
     'sem': 5

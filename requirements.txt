@@ -9,3 +9,4 @@ APScheduler~=3.10.4
 volcengine~=1.0.148
 playwright
 cffi
+jinja~=3.1.4
