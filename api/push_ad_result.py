@@ -10,8 +10,7 @@ from pydantic import BaseModel, Field
 from commonts.base_model import BaseResponseModel
 from tg_bot.handlers.timer_scan import decimal_to_base36
 from commonts.json_manager import json_manager
-from commonts.storage_manager import proxys_storage
-from commonts.storage_manager import timer_task_storage
+from commonts.storage_manager import history_html_storage
 from commonts.settings import settings
 from tg_bot.bot import send_message_to_bot
 from commonts.storage_manager import timer_task_storage
@@ -37,6 +36,7 @@ class NewAdResultReqModel(BaseModel):
         return result
 
 
+@router.post("/push_ad_result", response_model=BaseResponseModel)
 async def push_ad_result(ad_result: NewAdResultReqModel):
     now = datetime.datetime.now()
     now_ts = int(now.timestamp())
