@@ -13,6 +13,7 @@ from api.get_task_config import router as get_task_config_router
 from api.set_task_config import router as set_task_config_router
 from api.push_result import router as push_result_router
 from api.push_ad_result import router as push_ad_result_router
+from api.get_ad_task_config import router as get_ad_task_config_router
 
 router = APIRouter()
 router.include_router(index_router)
@@ -23,3 +24,4 @@ router.include_router(get_task_config_router)
 router.include_router(set_task_config_router)
 router.include_router(push_result_router)
 router.include_router(push_ad_result_router)
+router.include_router(get_ad_task_config_router)

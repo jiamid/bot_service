@@ -10,7 +10,8 @@ from pydantic import BaseModel, Field
 from commonts.base_model import BaseResponseModel
 from tg_bot.handlers.timer_scan import decimal_to_base36
 from commonts.json_manager import json_manager
-from commonts.storage_manager import history_html_storage
+from commonts.storage_manager import proxys_storage
+from commonts.storage_manager import timer_task_storage
 from commonts.settings import settings
 from tg_bot.bot import send_message_to_bot
 from commonts.storage_manager import timer_task_storage
@@ -41,6 +42,8 @@ async def push_ad_result(ad_result: NewAdResultReqModel):
     now_ts = int(now.timestamp())
     ts_id = decimal_to_base36(now_ts)
     filename = f'r{ts_id}'
+    if not ad_result.data:
+        return BaseResponseModel()
     json_manager.save_file(ad_result.get_data_json_dict(), filename)
     history_list: list = history_html_storage.get_value('history', [])
     history_list.append({now.strftime('%Y-%m-%d %H:%M:%S'): filename})
