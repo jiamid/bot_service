@@ -170,7 +170,7 @@ class ProxyManager:
 proxy_manager = ProxyManager()
 
 iptable_storage = StorageManager('iptable', {
-    'white': []
+    'white': ['localhost', '127.0.0.1']
 })
 
 
