@@ -8,10 +8,12 @@ from typing import List
 from fastapi import APIRouter
 from pydantic import BaseModel, Field
 from commonts.base_model import BaseResponseModel
-from commonts.storage_manager import click_task_manager
 from tg_bot.handlers.timer_scan import decimal_to_base36
 from commonts.json_manager import json_manager
 from commonts.storage_manager import history_html_storage
+from commonts.settings import settings
+from tg_bot.bot import send_message_to_bot
+from commonts.storage_manager import timer_task_storage
 
 router = APIRouter()
 
@@ -34,7 +36,6 @@ class NewAdResultReqModel(BaseModel):
         return result
 
 
-@router.post("/push_ad_result", response_model=BaseResponseModel)
 async def push_ad_result(ad_result: NewAdResultReqModel):
     now = datetime.datetime.now()
     now_ts = int(now.timestamp())
@@ -45,4 +46,8 @@ async def push_ad_result(ad_result: NewAdResultReqModel):
     history_list.append({now.strftime('%Y-%m-%d %H:%M:%S'): filename})
     history_list = history_list[-50:]
     history_html_storage.set_value('history', history_list)
+    text = f'访问以下网站查看结果\n{settings.base_webhook_url}/r/{filename}'
+    chat_ids = timer_task_storage.get_value('chat_ids', [])
+    for chat_id in chat_ids:
+        await send_message_to_bot(chat_id, text)
     return BaseResponseModel()
